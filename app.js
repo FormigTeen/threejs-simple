@@ -4,7 +4,7 @@ const path = require('path')
 const fs = require('fs')
 
 const originalAssets = path.join(__dirname, '../Assets')
-const finalAssets = path.join(__dirname, 'Assets')
+const finalAssets = path.join(__dirname, 'public/Assets')
 
 fs.symlink(originalAssets, finalAssets, "dir", () => null)
 
