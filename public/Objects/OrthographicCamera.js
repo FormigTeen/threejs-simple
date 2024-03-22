@@ -1,16 +1,16 @@
-import { OrthographicCamera } from 'three'
-import { getAspect } from '../../../Helpers/Helpers.js'
+import { OrthographicCamera as BaseOrthographicCamera } from 'three'
+import { getAspect } from '../Helpers/Helpers.js'
 
-class Camera {
+export default class OrthographicCamera {
     constructor() {
         this._size = 10.0
-        this._provider = new OrthographicCamera(
+        this._provider = new BaseOrthographicCamera(
             (this._size * getAspect()) / -2.0,
             (this._size * getAspect()) / 2.0,
             this._size / 2.0,
             this._size / -2.0,
-            -1.0,
-            1.0,
+            -5.0,
+            5.0,
         );
         this._provider.updateProjectionMatrix();
         window.addEventListener('resize', () => this.onResize(), false);
@@ -36,4 +36,3 @@ class Camera {
     }
 }
 
-export default Camera;

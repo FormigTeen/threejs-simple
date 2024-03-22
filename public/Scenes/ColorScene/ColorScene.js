@@ -1,5 +1,5 @@
 import { Color, Scene } from 'three'
-import Camera from './Objects/Camera.js';
+import OrthographicCamera from '../../Objects/OrthographicCamera.js'
 import Menu from './Objects/Menu.js';
 import { toColor } from '../../Helpers/Vector.js'
 import { toVector } from '../../Helpers/Color.js'
@@ -20,7 +20,11 @@ export default class ColorScene {
         this._currentTime = 0
         this._provider = new Scene();
         this._provider.name = 'Mudando de Cor';
-        this._camera = new Camera();
+        /**
+         * @type {OrthographicCamera} _camera
+         * @private
+         */
+        this._camera = new OrthographicCamera();
         /**
          * @type {Color} _defaultColor
          * @private
