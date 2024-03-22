@@ -7,6 +7,7 @@ import ScenesMenu from './Objects/ScenesMenu.js';
 //import TableScene from '@/Scenes/TableScene/TableScene';
 import StartScene from './Scenes/StartScene/StartScene.js'
 import CubeScene from './Scenes/CubeScene/CubeScene.js'
+import ColorScene from './Scenes/ColorScene/ColorScene.js'
 
 new Application()
     .useMenu()
@@ -16,6 +17,7 @@ new Application()
     //.addScene(new TravelScene())
     //.addScene(new SolarScene())
     //.addScene(new StartScene())
+    .addScene(new ColorScene())
     .addScene(new CubeScene())
     .onFuncMenu((_, anApp) => anApp.onMenu(new ScenesMenu(_)))
     .onBoot();

@@ -3,7 +3,7 @@ import Camera from './Objects/Camera.js';
 import Application from '../../Application.js';
 import Menu from './Objects/Menu.js';
 import { OrbitControls } from '../../Vendors/OrbitControls.js'
-import { getCanvas } from '../../Helpers.js'
+import  { getCanvas } from '../../Helpers/Helpers.js'
 
 export default class CubeScene {
     constructor() {

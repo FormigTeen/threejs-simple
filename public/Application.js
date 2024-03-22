@@ -13,10 +13,8 @@ export default class Application {
         window.addEventListener('resize', () => this.onResize(), false);
 
         this._scenes = [];
-        this._controls = {
-            Cena: '',
-            BackupCena: '',
-        };
+        this._currentScene = '';
+        this._backupScene = '';
         this._updatesStack = {};
     }
 
@@ -40,10 +38,10 @@ export default class Application {
             aScene.onMenu(this._menu);
         }
         this._scenes = [...this._scenes, aScene];
-        if (!this._controls.Cena) {
-            this._controls.Cena = aScene.getProvider().name;
+        if (!this._currentScene) {
+            this._currentScene = aScene.getProvider().name;
             this.onChangeScene();
-            this._controls.BackupCena = this._controls.Cena;
+            this._backupScene = this._currentScene;
         }
         if (isHasUpdate(aScene)) {
             this.registerUpdate(aScene);
@@ -71,22 +69,23 @@ export default class Application {
         const key = aObject.getUuid();
         this._updatesStack = {
             ...this._updatesStack,
-            [key]: (_ => aObject.onUpdate(_)),
+            [key]: (_ => aObject.onUpdate(this, _)),
         };
         return this;
     }
 
     onUpdate(aClock) {
         Object.keys(this._updatesStack)
+            .filter(_ => _ == this.getCurrentScene()?.getUuid())
             .map(_ => this._updatesStack[_])
-            .forEach(_ => _( {getApplication: () => this, getClock: () => aClock} ));
-        this._scene = this._scenes.find(_ => _.getProvider().name === this._controls['Cena']);
+            .forEach(_ => _(aClock));
+        this._scene = this._scenes.find(_ => _.getProvider().name === this._currentScene);
         this.onRender();
     }
 
     onMenu(aMenu) {
         if (!this._sceneOption) {
-            this._sceneOption = aMenu.getProvider().add(this._controls, 'Cena', this._scenes.map(_ => _.getProvider().name)).onChange(() => this.onChangeScene());
+            this._sceneOption = aMenu.getProvider().add(this, '_currentScene', this._scenes.map(_ => _.getProvider().name)).onChange(() => this.onChangeScene()).name('Cena Atual')
         } else {
             this._sceneOption.options(this._scenes.map(_ => _.getProvider().name));
         }
@@ -94,9 +93,13 @@ export default class Application {
     }
 
     onChangeScene() {
-        this._scenes.find(_ => _.getProvider().name === this._controls['BackupCena'])?.onUnload(this);
-        this._controls.BackupCena = this._controls.Cena;
-        this._scenes.find(_ => _.getProvider().name === this._controls['Cena'])?.onLoad(this);
+        this._scenes.find(_ => _.getProvider().name === this._backupScene)?.onUnload(this);
+        this._backupScene = this._currentScene;
+        this.getCurrentScene()?.onLoad(this);
+    }
+
+    getCurrentScene() {
+        return this._scenes.find(_ => _.getProvider().name === this._currentScene);
     }
 
     useMenu() {
