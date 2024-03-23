@@ -26,28 +26,22 @@ export default class ColorScene {
          */
         this._camera = new OrthographicCamera();
         /**
-         * @type {Color} _defaultColor
-         * @private
-         */
-        this._defaultColor = new Color(0x000000);
-
-        /**
          * @type {Color} _targetColor
          * @private
          */
-        this._targetColor = this._defaultColor
+        this._targetColor = new Color("black")
 
         /**
          * @type {Color} _currentColor
          * @private
          */
-        this._currentColor = this._defaultColor
+        this._currentColor = new Color("black")
 
         /**
          * @type {Color} _lastColor
          * @private
          */
-        this._lastColor = this._defaultColor
+        this._lastColor = new Color("black")
     }
 
     getProvider() {
@@ -62,7 +56,7 @@ export default class ColorScene {
     onLoad(aLoader) {
         this._menu?.getProvider().show();
         aLoader.setCamera(this._camera);
-        aLoader.getProvider().setClearColor(this._defaultColor)
+        aLoader.getProvider().setClearColor(this._currentColor)
         return this;
     }
 
@@ -71,7 +65,7 @@ export default class ColorScene {
      * @returns {ColorScene}
      */
     onUnload(aLoader) {
-        aLoader.getProvider().setClearColor(this._defaultColor)
+        aLoader.getProvider().setClearColor(new Color("black"))
         this._menu?.getProvider().hide();
         return this;
     }
@@ -102,7 +96,7 @@ export default class ColorScene {
      */
     onUpdate(aLoader) {
         if ( !this._hasAnimation ) {
-            aLoader.getProvider().setClearColor(this._defaultColor)
+            aLoader.getProvider().setClearColor(this._currentColor)
             return this;
         }
         this._currentTime += this._stepTime
