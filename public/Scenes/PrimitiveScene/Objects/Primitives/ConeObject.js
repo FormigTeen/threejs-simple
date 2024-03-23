@@ -8,7 +8,7 @@ import SimpleMenu from '../../../../Objects/SimpleMenu.js'
 export default class ConeObject {
 
     constructor() {
-        this._radiusProp = 0.5
+        this._radiusProp = 2.5
         this._heightProp = 0.5
         this._widthSegments = 50
         this._heightSegments = 30

@@ -9,8 +9,8 @@ export default class OrthographicCamera {
             (this._size * getAspect()) / 2.0,
             this._size / 2.0,
             this._size / -2.0,
-            -5.0,
-            5.0,
+            -10.0,
+            10.0,
         );
         this._provider.updateProjectionMatrix();
         window.addEventListener('resize', () => this.onResize(), false);

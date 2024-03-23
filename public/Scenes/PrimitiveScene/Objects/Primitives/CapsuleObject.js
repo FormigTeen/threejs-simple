@@ -9,7 +9,7 @@ import SimpleMenu from '../../../../Objects/SimpleMenu.js'
 export default class CapsuleObject {
 
     constructor() {
-        this._radiusProp = 0.5
+        this._radiusProp = 2.5
         this._lengthProp = 0.5
         this._capSegments = 50
         this._radialSegments = 30

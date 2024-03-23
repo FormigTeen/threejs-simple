@@ -34,21 +34,13 @@ export default class PrimitiveScene {
          */
         this._radiusProp = 0.5
 
-        this._tetrahedronObject = new TetrahedronObject()
-        this._torusObject = new TorusObject()
-        this._torusKnotObject = new TorusknotObject()
-        this._capsuleObject = new CapsuleObject()
-        this._coneObject = new ConeObject()
-        this._sphereGeometry = new SphereObject();
-
-
         this._sceneObjects = {
-            "Tetraedro": this._tetrahedronObject,
-            "Toro": this._torusObject,
-            "Toro Knot" : this._torusKnotObject,
-            "Esfera": this._sphereGeometry,
-            "Cone": this._coneObject,
-            "Capsula": this._capsuleObject,
+            "Tetraedro": new TetrahedronObject(),
+            "Toro Knot" : new TorusknotObject(),
+            "Toro": new TorusObject(),
+            "Esfera": new SphereObject(),
+            "Cone": new ConeObject(),
+            "Capsula": new CapsuleObject(),
         }
 
         this._selectedObject = Object.keys(this._sceneObjects)[0]

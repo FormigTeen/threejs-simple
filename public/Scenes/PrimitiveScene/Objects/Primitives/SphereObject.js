@@ -9,7 +9,7 @@ export default class SphereObject {
          * @private
          */
         this._menu = null
-        this._radiusProp = 0.5
+        this._radiusProp = 2.5
         this._widthSegments = 50
         this._heightSegments = 30
 

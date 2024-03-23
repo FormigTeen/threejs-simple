@@ -4,9 +4,12 @@ export default class TorusObject {
 
     constructor() {
         this._menu = null
-        this._radiusProp = 0.5
+        this._radiusProp = 2.5
+        this._tubeProp = 0.3
+        this._radialSegments = 50
+        this._tubularSegments = 30
         this._provider = new Mesh(
-            new TorusGeometry(this._radiusProp, 0.3, 30, 30),
+            this.getGeometry(),
             new MeshBasicMaterial({
                 color: new Color("green"),
                 wireframe: true
@@ -15,7 +18,11 @@ export default class TorusObject {
     }
 
     getGeometry() {
-        return new TetrahedronGeometry(this._radiusProp)
+        return new TorusGeometry(this._radiusProp, this._tubeProp, this._radialSegments, this._tubularSegments);
+    }
+
+    onChange() {
+        this._provider.geometry = this.getGeometry()
     }
 
     getProvider() {
@@ -49,6 +56,16 @@ export default class TorusObject {
     onMenu(aMenu) {
         if (!this._menu) {
             this._menu = new SimpleMenu(aMenu, "Opções do Toro")
+            this._menu.getProvider().add(this, "_radiusProp", 0.1, 3.5) .name("Comprimento do Raio")
+                .onChange(() => this.onChange())
+            this._menu.getProvider().add(this, "_tubeProp", 0.1, 2.5) .name("Comprimento Raio do Tubo")
+                .onChange(() => this.onChange())
+            this._menu.getProvider().add(this, "_radialSegments", 2, 100, 1)
+                .name("Segmentos do Raio")
+                .onChange(() => this.onChange())
+            this._menu.getProvider().add(this, "_tubularSegments", 2, 100, 1)
+                .name("Segmentos do Tubo")
+                .onChange(() => this.onChange())
         }
         return this._menu;
     }

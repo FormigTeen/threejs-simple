@@ -39,7 +39,7 @@ export default class Application {
         }
         this._scenes = [...this._scenes, aScene];
         if (!this._currentScene) {
-            this._currentScene = aScene.getProvider().name;
+            this._currentScene = aScene.getUuid();
             this.onChangeScene();
             this._backupScene = this._currentScene;
         }
@@ -79,13 +79,21 @@ export default class Application {
             .filter(_ => _ == this.getCurrentScene()?.getUuid())
             .map(_ => this._updatesStack[_])
             .forEach(_ => _(aClock));
-        this._scene = this._scenes.find(_ => _.getProvider().name === this._currentScene);
+        this._scene = this._scenes.find(_ => _.getUuid() === this._currentScene);
         this.onRender();
     }
 
     onMenu(aMenu) {
         if (!this._sceneOption) {
-            this._sceneOption = aMenu.getProvider().add(this, '_currentScene', this._scenes.map(_ => _.getProvider().name)).onChange(() => this.onChangeScene()).name('Cena Atual')
+            this._sceneOption = aMenu.getProvider()
+                .add(
+                    this,
+                    '_currentScene',
+                    this._scenes
+                        .map(_ => [_.getProvider().name, _.getUuid()])
+                        .reduce((aDictionary, [aName, aId]) => ({...aDictionary, [aName]: aId}), {})
+                ).onChange(() => this.onChangeScene())
+                .name('Cena Atual')
         } else {
             this._sceneOption.options(this._scenes.map(_ => _.getProvider().name));
         }
@@ -93,13 +101,13 @@ export default class Application {
     }
 
     onChangeScene() {
-        this._scenes.find(_ => _.getProvider().name === this._backupScene)?.onUnload(this);
+        this._scenes.find(_ => _.getUuid() === this._backupScene)?.onUnload(this);
         this._backupScene = this._currentScene;
         this.getCurrentScene()?.onLoad(this);
     }
 
     getCurrentScene() {
-        return this._scenes.find(_ => _.getProvider().name === this._currentScene);
+        return this._scenes.find(_ => _.getUuid() === this._currentScene);
     }
 
     useMenu() {

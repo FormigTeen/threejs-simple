@@ -3,19 +3,24 @@ import SimpleMenu from '../../../../Objects/SimpleMenu.js'
 export default class TetrahedronObject {
 
     constructor() {
-        this._radiusProp = 0.5
+        this._radiusProp = 2.5
+        this._detailProp = 2
         this._menu = null
         this._provider = new Mesh(
             this.getGeometry(),
             new MeshBasicMaterial({
                 color: new Color("green"),
-                wireframe:true
+                wireframe: true
             })
         );
     }
 
     getGeometry() {
-        return new TetrahedronGeometry(this._radiusProp)
+        return new TetrahedronGeometry(this._radiusProp, this._detailProp)
+    }
+
+    onChange() {
+        this._provider.geometry = this.getGeometry()
     }
 
     getProvider() {
@@ -49,6 +54,10 @@ export default class TetrahedronObject {
     onMenu(aMenu) {
         if (!this._menu) {
             this._menu = new SimpleMenu(aMenu, "Opções do Tetraedro")
+            this._menu.getProvider().add(this, "_radiusProp", 0.1, 3.5) .name("Comprimento do Raio")
+                .onChange(() => this.onChange())
+            this._menu.getProvider().add(this, "_detailProp", 0, 100, 1) .name("Nível de Detalhe")
+                .onChange(() => this.onChange())
         }
         return this._menu;
     }
