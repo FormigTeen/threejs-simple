@@ -35,7 +35,7 @@ class Camera {
         this._menu = aMenu;
             this._menu
                 .getProvider()
-                .add(this, '_distance', 1, 100)
+                .add(this, '_distance', 1, 200)
                 .name('Distância')
         return aMenu;
     }

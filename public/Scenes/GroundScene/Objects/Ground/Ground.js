@@ -48,11 +48,10 @@ import { getLocalFile } from '../../../../Helpers/Helpers.js';
 
 
       this._useRotate = false
-      this._amplitude = 1.0;
+      this._amplitude = 5.0;
       this._gradientHeight = 10.0;
       this._centerGradient = 0.0;
       this._irregularMode = false;
-      this._gradientMode = false;
       this._modeMesh = true;
       this._segmentsCount = 50
       this._useWave = false
@@ -128,7 +127,7 @@ import { getLocalFile } from '../../../../Helpers/Helpers.js';
     onMenu(aMenu) {
       aMenu
         .getProvider()
-        .add(this, '_amplitude', 0.1, 20.0)
+        .add(this, '_amplitude', 0.1, 10.0)
         .name('Amplitude')
         .onChange(() => this.onChange());
       aMenu
@@ -148,11 +147,6 @@ import { getLocalFile } from '../../../../Helpers/Helpers.js';
         .name('Modo Malha')
         .onChange(() => this.onChange());
   
-      aMenu
-        .getProvider()
-        .add(this, '_gradientMode')
-        .name('Modo Gradiente')
-        .onChange(() => this.onChange());
       aMenu
         .getProvider()
         .add(this, '_useRotate')

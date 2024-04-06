@@ -42,6 +42,7 @@ export default class {
 
     onUpdate() {
         this._ground.onUpdate();
+        this._camera.onUpdate();
         return this;
     }
 
