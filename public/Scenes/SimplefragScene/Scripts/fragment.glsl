@@ -5,6 +5,8 @@
 varying vec2 aVertex;
 
 uniform float uTime;
+uniform vec3 vTarget;
+
 uniform vec2 uDim;
 uniform float fMode;
 
@@ -33,7 +35,12 @@ void main () {
     float fRelativeDistance = fDistance / fMaxDistance;
 
     if ( fRelativeDistance <= 1.0 ) {
-        gl_FragColor = vec4(1.0 - fRelativeDistance, 0.0, 0.0, 1.0);;
+        gl_FragColor = vec4(
+            (vTarget.x - fRelativeDistance * vTarget.x) * (uTime), 
+            (vTarget.y - fRelativeDistance * vTarget.y) * (uTime), 
+            (vTarget.z - fRelativeDistance * vTarget.z) * (uTime), 
+            1.0
+        );
     } else {
         gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);;
     }

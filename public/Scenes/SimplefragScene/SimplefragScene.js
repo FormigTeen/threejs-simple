@@ -1,11 +1,13 @@
-import { Mesh, PlaneGeometry, Scene, ShaderMaterial, Vector2 } from 'three';
+import { Mesh, PlaneGeometry, Scene, ShaderMaterial, Vector2, Vector3 } from 'three';
 import Application from '../../Application.js';
-import Menu from './Objects/Menu.js';
+import Menu from './../../Objects/SimpleMenu.js';
 import OrthographicCamera from '../../Objects/OrthographicCamera.js';
 import { getLocalFile  } from '../../Helpers/Helpers.js';
 
 export default class {
     constructor() {
+        this._time = 1.0;
+        this._targetColor = new Vector3(1.0, 0.0, 0.0);
         this._provider = new Scene();
         this._provider.name = 'Fragmento Simples';
         this._camera = new OrthographicCamera();
@@ -17,6 +19,7 @@ export default class {
         "Chebyshev": 3.0,
       }
 
+      this._enableAnimation = false;
       this._selectedMode = Object.keys(this._modeList)[0]
 
         this._shaderPromise = Promise.all([
@@ -41,11 +44,18 @@ export default class {
         return new Vector2(5.0, 5.0)
     }
 
+    getTimerShader() {
+        return 1.0 - Math.abs(this._time - 1.0);
+    }
+
     getMaterial() {
         return new ShaderMaterial({
             uniforms: {
                 uTime: {
-                    type: "f", value: 0.0
+                    type: "f", value: this.getTimerShader()
+                },
+                vTarget: {
+                    type: "vec3", value: this._targetColor
                 },
                 uDim: {
                     type: "vec2", value: this.getDimension()
@@ -79,17 +89,26 @@ export default class {
 
     onMenu(aMenu) {
         if (!this._menu) {
-            this._menu = new Menu(aMenu);
+            this._menu = new Menu(aMenu, "Opções do Plano");
             this._camera.onMenu(this._menu);
             this._menu
                 .getProvider()
                 .add(this, '_selectedMode', Object.keys(this._modeList))
                 .name('Algoritmo Selecionado')
+            this._menu
+                .getProvider()
+                .add(this, '_enableAnimation')
+                .name('Ativar Animação')
         }
         return this._menu;
     }
 
     onUpdate() {
+        this._time = this._time + (this._enableAnimation ? 0.005 : 0.0);
+        if ( this._time > 2.0 ) {
+            this._targetColor = new Vector3(Math.random(), Math.random(), Math.random());
+            this._time = 0;
+        }
       this._shaderPromise.then(() => {
         this._plane.material = this.getMaterial();
       })
