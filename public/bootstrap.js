@@ -10,6 +10,7 @@ import PrimitiveScene from './Scenes/PrimitiveScene/PrimitiveScene.js'
 import CubeScene from './Scenes/CubeScene/CubeScene.js'
 import ColorScene from './Scenes/ColorScene/ColorScene.js'
 import GroundScene from './Scenes/GroundScene/GroundScene.js';
+import SimplefragScene from './Scenes/SimplefragScene/SimplefragScene.js';
 
 new Application()
     .useMenu()
@@ -19,6 +20,7 @@ new Application()
     //.addScene(new TravelScene())
     //.addScene(new SolarScene())
     //.addScene(new StartScene())
+    .addScene(new SimplefragScene())
     .addScene(new GroundScene())
     .addScene(new PrimitiveScene())
     .addScene(new ColorScene())

@@ -109,7 +109,6 @@ import { getLocalFile } from '../../../../Helpers/Helpers.js';
     onUpdate() {
       if ( this._useWave ) {
         this._time = ( this._time + 0.005 ) % 360;
-        console.log(this._time)
       }
 
       this._shaderPromise.then(() => {
