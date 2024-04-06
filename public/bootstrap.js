@@ -9,6 +9,7 @@ import StartScene from './Scenes/StartScene/StartScene.js'
 import PrimitiveScene from './Scenes/PrimitiveScene/PrimitiveScene.js'
 import CubeScene from './Scenes/CubeScene/CubeScene.js'
 import ColorScene from './Scenes/ColorScene/ColorScene.js'
+import GroundScene from './Scenes/GroundScene/GroundScene.js';
 
 new Application()
     .useMenu()
@@ -18,6 +19,7 @@ new Application()
     //.addScene(new TravelScene())
     //.addScene(new SolarScene())
     //.addScene(new StartScene())
+    .addScene(new GroundScene())
     .addScene(new PrimitiveScene())
     .addScene(new ColorScene())
     .addScene(new CubeScene())
