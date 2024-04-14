@@ -56,7 +56,7 @@ export default class ColorScene {
     onLoad(aLoader) {
         this._menu?.getProvider().show();
         aLoader.setCamera(this._camera);
-        aLoader.getProvider().setClearColor(this._currentColor)
+        aLoader.getProvider().then(_ => _.setClearColor(this._currentColor));
         return this;
     }
 
@@ -65,7 +65,7 @@ export default class ColorScene {
      * @returns {ColorScene}
      */
     onUnload(aLoader) {
-        aLoader.getProvider().setClearColor(new Color("black"))
+        aLoader.getProvider().then(_ => _.setClearColor(new Color("black")))
         this._menu?.getProvider().hide();
         return this;
     }
@@ -96,7 +96,7 @@ export default class ColorScene {
      */
     onUpdate(aLoader) {
         if ( !this._hasAnimation ) {
-            aLoader.getProvider().setClearColor(this._currentColor)
+            aLoader.getProvider().then(_ => _.setClearColor(this._currentColor));
             return this;
         }
         this._currentTime += this._stepTime
@@ -104,7 +104,7 @@ export default class ColorScene {
             this._lastColor = this._currentColor
             this._currentColor = this._targetColor;
             this._targetColor = new Color(Math.random(), Math.random(), Math.random());
-            aLoader.getProvider().setClearColor(this._currentColor)
+            aLoader.getProvider().then(_ => _.setClearColor(this._currentColor))
             this._currentTime = 0;
         }
 
@@ -115,7 +115,7 @@ export default class ColorScene {
                         toVector(this._targetColor).sub(toVector(this._lastColor)).multiplyScalar(this._currentTime)
                     )
             )
-            aLoader.getProvider().setClearColor(this._currentColor)
+            aLoader.getProvider().then(_ => _.setClearColor(this._currentColor))
         }
 
         return this;

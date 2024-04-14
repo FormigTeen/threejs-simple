@@ -54,14 +54,21 @@ export default class Application {
         return this;
     }
 
-    onRender() {
+    async onRender() {
         if (this._scene && this._camera) {
-            this.getProvider().render(this._scene.getProvider(), this._camera.getProvider());
+            Promise.all([
+                this.getProvider(),
+                this._scene.getProvider(),
+                this._camera.getProvider(),
+                ])
+                .then(([anApp, aScene, aCamera]) =>
+                    anApp.render(aScene, aCamera)
+                );
         }
         return this;
     }
 
-    getProvider() {
+    async getProvider() {
         return this._provider;
     }
 

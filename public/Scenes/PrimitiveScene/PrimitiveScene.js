@@ -62,7 +62,7 @@ export default class PrimitiveScene {
     onLoad(aLoader) {
         this._menu?.getProvider().show();
         aLoader.setCamera(this._camera);
-        aLoader.getProvider().setClearColor(new Color("black"))
+        aLoader.getProvider().then(_ => _.setClearColor(new Color("black")));
         return this;
     }
 
@@ -71,7 +71,7 @@ export default class PrimitiveScene {
      * @returns {ColorScene}
      */
     onUnload(aLoader) {
-        aLoader.getProvider().setClearColor(this._defaultColor)
+        aLoader.getProvider().then(_ => _.setClearColor(this._defaultColor))
         this._menu?.getProvider().hide();
         return this;
     }
