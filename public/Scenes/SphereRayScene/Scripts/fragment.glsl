@@ -2,11 +2,8 @@ precision mediump float;
 
 		uniform vec3 uCamPos;
 
-		vec3 eCenter 	= vec3(0.0, 0.0, 0.0);
-		vec3 	O, 
-				P;
+		vec3 eCenter = vec3(0.0, 0.0, 0.0);
 
-		float eRadius 	= 3.0;
 		vec3 lPos 		= vec3(0.5, 1.0, 0.3);
 		vec3 lColor 	= vec3(1.0, 1.0, 1.0);
 		vec3 dColor 	= vec3(1.0, 0.0, 0.0);
@@ -17,19 +14,30 @@ precision mediump float;
 
 		varying vec3 vWorld; 
 
-		/// *********************************************
-		float rayHitSphere(vec3 ray) {
-			float a = dot(ray, ray);
-			float b = 2.0 * dot(O, ray);
-			float c = dot (O, O) - eRadius*eRadius;
-			float delta = b*b - (4.0*a*c);
+vec3 getOrigin() {
+    return uCamPos - eCenter;
+}
 
-			if (delta < 0.0)
-				return -1.0;
-			
-			return  min( ((-b) - sqrt(delta)) / (2.0*a), 
-						 ((-b) + sqrt(delta)) / (2.0*a) );
-			}	
+vec3 getRelativePoint() {
+	return vWorld - eCenter;
+}
+		/// *********************************************
+float rayHitSphere(vec3 aPoint) {
+	const float eRadius = 3.0;
+    vec3 pRelativeCenter = uCamPos - eCenter;
+	vec3 vDiference = aPoint - pRelativeCenter;
+
+    float a = dot(vDiference, vDiference);
+    float b = 2.0 * dot(pRelativeCenter, vDiference);
+    float c = dot (pRelativeCenter, pRelativeCenter) - eRadius * eRadius;
+    float delta = b * b - (4.0 * a * c);
+
+    if (delta < 0.0)
+        return -1.0;
+    
+    return  min( ((-b) - sqrt(delta)) / (2.0*a), 
+                    ((-b) + sqrt(delta)) / (2.0*a) );
+}	
 
 		/// *********************************************
 		vec4 CorDeFundo(vec3 ray) {
@@ -39,7 +47,7 @@ precision mediump float;
 
 		/// *********************************************
 		vec4 compDifusa(vec3 ray, float t) {
-			vec3 pW = O + t * ray;
+			vec3 pW = getOrigin() + t * ray;
 
 			vec3 N = normalize(2.0 * pW);			
 
@@ -54,13 +62,13 @@ precision mediump float;
 
 		/// *********************************************
 		vec4 compEspecular(vec3 ray, float t) {
-			vec3 pW = O + t * ray;
+			vec3 pW = getOrigin() + t * ray;
 
 			vec3 N = normalize(2.0 * pW);
 
 			vec3 L = normalize(lPos); 	// Luz direcional
 
-			vec3 vV = normalize(O - pW); 
+			vec3 vV = normalize(getOrigin() - pW); 
 		 	vec3 vR = reflect(-L, N); 
 
 		 	float omega = dot(vV, vR); 
@@ -74,12 +82,9 @@ precision mediump float;
 		/// *********************************************
 		void main(void) {	
 
-			O = uCamPos - eCenter;
-			P = vWorld - eCenter;
+			vec3 D = getRelativePoint() - getOrigin();
 
-			vec3 D = P - O;
-
-			float t = rayHitSphere(D);
+			float t = rayHitSphere(getRelativePoint());
 
 			if (t == -1.0) 
 				gl_FragColor = CorDeFundo(D);
